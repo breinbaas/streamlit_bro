@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 from pyproj import Transformer
 import folium
+import matplotlib.pyplot as plt
 
 st.markdown(
     """
@@ -65,7 +66,6 @@ if uploaded_file is not None:
                         lat, lon = tf.transform(cpt.easting, cpt.northing)
                         mapinfo.append(("cpt", file, lat, lon))
                 except Exception as e:
-                    print("1")
                     cpt_errors.append(f"Could not read '{file}' got error '{e}'")
             elif "boor" in file and file.endswith(".xml"):
                 try:
@@ -94,7 +94,6 @@ if uploaded_file is not None:
     m = folium.Map(location=midpoint, zoom_start=16)
 
     for t, f, lat, lon in mapinfo:
-        print(t, f, lat, lon)
         if t == "cpt":
             folium.CircleMarker(
                 [lat, lon],
@@ -122,3 +121,5 @@ if uploaded_file is not None:
         for filename, fig in borehole_figs:
             st.markdown(f"#### {filename}")
             st.pyplot(fig)
+
+    plt.clf()
